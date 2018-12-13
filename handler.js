@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
 const chatwork = require("./services/chatwork");
+const weather = require("./services/weather");
 
 module.exports = {
   bot: (event, context, callback) => {
@@ -16,13 +17,12 @@ module.exports = {
     let mentionMess = message.body;
     mentionMess = mentionMess.substr(mentionMess.indexOf("\n") + 1, 50);
     mentionMess = encodeURI(mentionMess);
-    console.log(mentionMess.indexOf(encodeURI("thời tiết")));
+    
     if (mentionMess.indexOf(encodeURI("thời tiết")) != -1) {
-      fetch(`https://api.openweathermap.org/data/2.5/find?q=Hanoi&units=metric&appid=d8e9bfa86f552bf4fabdbfa0ec3cf020`)
-      .then(async weather => {
-
-        let receivedMess = await weather.json();
-        let message = `[To:${fromUser}] \n ${receivedMess.list[0].main.temp} độ đó`;
+      weather()
+      .then(weather => {
+        
+        let message = `[To:${fromUser}] \n ${weather.list[0].main.temp} độ đó`;
         message = encodeURI(message);
   
         chatwork(roomId, message);
