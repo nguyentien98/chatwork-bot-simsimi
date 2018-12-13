@@ -1,0 +1,16 @@
+service: chatworkbot
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: ap-southeast-1
+  environment:
+    REGION: "${self:provider.region}"
+
+functions:
+  bot:
+    handler: handler.bot
+    events:
+      - http:
+          path: /bot
+          method: POST
